@@ -1,0 +1,23 @@
+az storage account create --name mydockertest --resource-group DockerTest --location uaenorth
+az acr create --resource-group DockerTest --name codographiacontainers --sku Basic
+
+docker tag ayobna/aci-app codographiacontainers.azurecr.io/aci-app:v1  
+
+//codographiacontainers.azurecr.io/aci-app:v1     
+
+docker push codographiacontainers.azurecr.io/aci-app:v1 
+
+//codographiacontainers
+
+az container create --resource-group DockerTest --name aci-app-container
+ --image codographiacontainers.azurecr.io/aci-app:v1 
+ --срu 1 --memory 1
+ --registry-login-server codographiacontainers.azurecr.io
+ --registry-username codographiacontainers
+--registry-password pa1BPQLk7B7hjjB+4CtmYykuZGP52FmO
+--ip-address Public
+--dns-name-label aci-app-dns
+--ports 80
+
+
+az container show --resource-group  DockerTest --name aci-app-container --query ipAddress.fqdn
